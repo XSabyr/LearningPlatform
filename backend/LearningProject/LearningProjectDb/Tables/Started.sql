@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[Started]
+(
+	[userId] INT CONSTRAINT [FK_STARTED_USER] FOREIGN KEY
+        REFERENCES [dbo].[User]([Id]) ON DELETE CASCADE NOT NULL, 
+    [courseId] INT CONSTRAINT [FK_STARTED_COURSE] FOREIGN KEY
+        REFERENCES [dbo].[Course]([Id]) ON DELETE CASCADE NOT NULL, 
+    [startDate] DATE NOT NULL, 
+    CONSTRAINT [PK_Started] PRIMARY KEY ([courseId], [userId]),
+)
