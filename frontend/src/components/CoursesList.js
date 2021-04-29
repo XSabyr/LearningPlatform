@@ -1,8 +1,15 @@
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import React from 'react';
-import { GetCourses, GetCoursesWithSearch } from '../data';
+import {
+  GetCourses,
+  GetCoursesByCreator,
+  GetCoursesWithSearch,
+  GetStartedCoursesByUserId,
+} from '../data';
 import CoursesListItem from './CoursesListItem';
 import { Typography } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import NotFoundPage from './NotFoundPage';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -10,14 +17,38 @@ function useQuery() {
 
 const CoursesList = () => {
   const query = useQuery();
-  const search = query.get('search');
+  let location = useLocation();
+  let history = useHistory();
 
-  const courses = search === null ? GetCourses() : GetCoursesWithSearch(search);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const userId = useSelector((state) => state.user.id);
+  let courses;
 
-  if (courses === null) {
-    return <Typography variant="h5">No courses Found</Typography>;
+  if (location.pathname === '/courses/started') {
+    if (!isAuthenticated) {
+      history.push('/signin');
+    }
+    courses = GetStartedCoursesByUserId(userId);
+    if (courses.length === 0) {
+      return <NotFoundPage text="You didnt start any course" />;
+    }
+  } else if (location.pathname === '/courses/creator') {
+    if (!isAuthenticated) {
+      history.push('/signin');
+    }
+    courses = GetCoursesByCreator(userId);
+    if (courses.length === 0) {
+      return <NotFoundPage text="You didnt create any course" />;
+    }
+  } else {
+    const search = query.get('search');
+
+    courses = search === null ? GetCourses() : GetCoursesWithSearch(search);
+
+    if (courses === null) {
+      return <Typography variant="h5">No courses Found</Typography>;
+    }
   }
-
   return (
     <div>
       <ul style={{ listStyleType: 'none' }}>

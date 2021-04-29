@@ -1,7 +1,7 @@
 const courses = [
   {
     id: 1,
-    creator: 'ivan',
+    creator: 1,
     title: 'english',
     introduction: 'best course for learning english ',
     sections: [
@@ -30,7 +30,7 @@ const courses = [
   },
   {
     id: 2,
-    creator: 'roma',
+    creator: 2,
     title: 'react',
     introduction: 'contains all u need to know about react',
     sections: [
@@ -59,7 +59,7 @@ const courses = [
   },
   {
     id: 3,
-    creator: 'gennadiy',
+    creator: 1,
     title: 'C#',
     introduction: 'general information about c# ',
     sections: [
@@ -97,24 +97,40 @@ const users = [
     lastName: 'USER1',
   },
   {
-    id: 1,
+    id: 2,
     email: 'user2@email.ru',
     password: 'pass2',
     firstName: 'USER2',
     lastName: 'USER2',
   },
   {
-    id: 1,
+    id: 3,
     email: 'user3@email.ru',
     password: 'pass3',
     firstName: 'USER3',
     lastName: 'USER3',
   },
   {
+    id: 4,
     email: 'user4@email.ru',
     password: 'pass4',
     firstName: 'USER4',
     lastName: 'USER4',
+  },
+];
+
+const started = [
+  {
+    userId: 1,
+    courseId: 2,
+  },
+  {
+    userId: 2,
+    courseId: 1,
+  },
+  {
+    userId: 2,
+    courseId: 3,
   },
 ];
 
@@ -137,8 +153,28 @@ export const tryToLogIn = (email, password) => {
 
 export const GetCoursesWithSearch = (search) => {
   const re = new RegExp(`${search}`);
-  console.log(re);
   const result = courses.filter((course) => re.test(String(course.title).toLowerCase()));
 
   return result.length !== 0 ? result : null;
+};
+
+export const GetUserFirstLastNamesById = (id) => {
+  const user = users.filter((user) => user.id === id);
+
+  return user.length !== 0 ? `${user[0].firstName} ${user[0].lastName} ${user[0].email}` : null;
+};
+
+export const GetStartedCoursesByUserId = (userId) => {
+  let ids = [];
+  started.forEach((element) => {
+    if (element.userId === userId) {
+      ids.push(element.courseId);
+    }
+  });
+
+  return courses.filter((course) => ids.includes(course.id));
+};
+
+export const GetCoursesByCreator = (userId) => {
+  return courses.filter((course) => course.creator === userId);
 };

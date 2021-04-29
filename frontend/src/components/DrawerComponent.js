@@ -7,11 +7,8 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-
+import { Link } from 'react-router-dom';
 import { fade } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 
@@ -139,8 +136,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function DrawerComponent({ open, handleDrawerClose, children }) {
+export default function DrawerComponent({ open, handleDrawerClose }) {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+
+  const sections = useSelector((state) => state.sections.sections);
 
   const classes = useStyles();
   const theme = useTheme();
@@ -149,14 +148,17 @@ export default function DrawerComponent({ open, handleDrawerClose, children }) {
     {
       index: 1,
       text: 'All Courses',
+      to: '/courses',
     },
     {
       index: 2,
       text: 'The most popular courses',
+      to: '/courses',
     },
     {
       index: 3,
       text: 'Editors choice',
+      to: '/courses',
     },
   ];
 
@@ -164,18 +166,22 @@ export default function DrawerComponent({ open, handleDrawerClose, children }) {
     {
       index: 1,
       text: 'Started Courses',
+      to: '/courses/started',
     },
     {
       index: 2,
       text: 'My courses',
+      to: '/courses/creator',
     },
     {
       index: 3,
       text: 'Account Settings',
+      to: '/account/settings',
     },
     {
       index: 4,
       text: 'Create new course',
+      to: '/account/createcourse',
     },
   ];
 
@@ -193,12 +199,27 @@ export default function DrawerComponent({ open, handleDrawerClose, children }) {
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </div>
+      {sections && (
+        <div>
+          <Divider />
+          <List>
+            {sections.map(({ text, index, to }) => (
+              <ListItem button key={index}>
+                <Link to={{ pathname: to }} className={classes.link}>
+                  <ListItemText primary={text} />
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      )}
       <Divider />
       <List>
-        {drawerUnauthorisedList.map(({ text, index }) => (
-          <ListItem button key={text}>
-            {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-            <ListItemText primary={text} />
+        {drawerUnauthorisedList.map(({ text, index, to }) => (
+          <ListItem button key={index}>
+            <Link to={{ pathname: to }} className={classes.link}>
+              <ListItemText primary={text} />
+            </Link>
           </ListItem>
         ))}
       </List>
@@ -206,10 +227,12 @@ export default function DrawerComponent({ open, handleDrawerClose, children }) {
         <div>
           <Divider />
           <List>
-            {drawerAuthorisedList.map(({ text, index }) => (
-              <ListItem button key={text}>
+            {drawerAuthorisedList.map(({ text, index, to }) => (
+              <ListItem button key={index}>
                 {/* <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon> */}
-                <ListItemText primary={text} />
+                <Link to={to} className={classes.link}>
+                  <ListItemText primary={text} />{' '}
+                </Link>
               </ListItem>
             ))}
           </List>

@@ -1,36 +1,16 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
+import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import { Link } from 'react-router-dom';
 
 import { fade } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import { useSelector, useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
-import { logout } from '../store/reducers/userSlice';
 import ToolBarComponent from './ToolBarComponent';
 import DrawerComponent from './DrawerComponent';
 
@@ -159,11 +139,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header({ children }) {
-  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const dispatch = useDispatch();
-
   const classes = useStyles();
-  const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -188,9 +164,8 @@ export default function Header({ children }) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = 'primary-search-account-menu';
-
   const mobileMenuId = 'primary-search-account-menu-mobile';
+  // eslint-disable-next-line
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}

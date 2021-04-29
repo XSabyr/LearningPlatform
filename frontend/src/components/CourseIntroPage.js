@@ -2,7 +2,7 @@ import { Button, Typography } from '@material-ui/core';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import { getCourseById } from '../data';
+import { getCourseById, GetUserFirstLastNamesById } from '../data';
 import NotFoundPage from './NotFoundPage';
 
 const CourseIntroPage = () => {
@@ -18,7 +18,7 @@ const CourseIntroPage = () => {
   return (
     <div>
       <Typography variant="h3">{course.title}</Typography>
-      <Typography variant="h6">created by: {course.creator}</Typography>
+      <Typography variant="h6">created by: {GetUserFirstLastNamesById(course.creator)}</Typography>
       <Typography variant="h4">{course.introduction}</Typography>
       {isAuthenticated && (
         <Button

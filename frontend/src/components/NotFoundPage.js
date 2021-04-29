@@ -1,7 +1,8 @@
-const NotFoundPage = () => {
+const NotFoundPage = ({ text }) => {
   return (
     <div>
-      <h1>Page you are looking for is not found</h1>
+      {text && <h1>{text}</h1>}
+      {!text && <h1>Page you are looking for is not found</h1>}
     </div>
   );
 };
