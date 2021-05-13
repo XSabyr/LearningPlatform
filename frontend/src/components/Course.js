@@ -20,12 +20,15 @@ const createSections = (courseId, sectionsList) => {
 
 const Course = () => {
   let dispatch = useDispatch();
+  let drawerSections = null;
 
   useEffect(() => {
+    dispatch(setSections({ sections: drawerSections }));
+
     return () => {
       dispatch(deleteSections());
     };
-  }, [dispatch]);
+  }, [dispatch, drawerSections]);
 
   const { courseId, sectionId } = useParams();
 
@@ -35,7 +38,7 @@ const Course = () => {
   }
 
   let sections = course.sections;
-  dispatch(setSections({ sections: createSections(courseId, sections) }));
+  drawerSections = createSections(courseId, sections);
 
   const result = sections.filter((section) => section.number === +sectionId);
   const section = result.length === 1 ? result[0] : null;
